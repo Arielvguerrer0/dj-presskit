@@ -1,0 +1,43 @@
+/* Ariel Guerrero — tokens de marca (logo 5b "RR Espejo")
+   Fuentes (Google Fonts, licencia OFL). Agregar en el <head>:
+   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Dela+Gothic+One&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"> */
+
+:root {
+  /* Tipografía */
+  --font-display: 'Dela Gothic One', sans-serif; /* logo y titulares grandes */
+  --font-heading: 'Anton', sans-serif;           /* títulos de sección */
+  --font-body: 'Space Mono', monospace;          /* textos, datos, botones */
+
+  /* Color: base monocromática */
+  --color-ink: #0B0B0C;      /* fondo principal */
+  --color-surface: #161617;  /* fondo secundario */
+  --color-bone: #F2EFE9;     /* texto y logo */
+  --color-steel: #8A8A8E;    /* sombra del logo y texto secundario sobre oscuro */
+  --color-steel-dark: #5E5E62; /* texto secundario sobre hueso */
+
+  /* Acentos opcionales: solo uno a la vez, para visuales y campañas */
+  --color-accent-volt: #E8FF3A;
+  --color-accent-ice: #3AD7FF;
+
+  /* Sombra sólida del logo: sin desenfoque */
+  --logo-shadow: drop-shadow(0.048em 0.048em 0 var(--color-steel));
+}
+
+/* Logo 5b como texto vivo:
+   <div class="ag-logo">
+     <div class="ag-logo__ariel">ARIEL</div>
+     <div class="ag-logo__guerrero"><span>GUE</span><span class="ag-logo__r">R</span><span>RERO</span></div>
+   </div> */
+.ag-logo {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.12em;
+  font-family: var(--font-display);
+  font-size: 84px; /* cambia solo este valor para escalar todo el logo */
+  letter-spacing: -0.02em;
+  color: var(--color-bone);
+  filter: var(--logo-shadow);
+}
+.ag-logo__ariel { font-size: 0.524em; line-height: 1; text-align: center; }
+.ag-logo__guerrero { display: flex; line-height: 0.9; }
+.ag-logo__r { display: inline-block; transform: scaleX(-1); }

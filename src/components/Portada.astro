@@ -1,0 +1,17 @@
+---
+import { artista, ruta } from '../data/presskit';
+---
+
+<section id="inicio" class="relative flex min-h-svh flex-col justify-end overflow-hidden px-4 pt-24 pb-28 md:px-12">
+  <img src={ruta('media/ariel-principal.webp')} alt="" width="1688" height="2172" fetchpriority="high" class="foto-principal" />
+  <div class="relative">
+    <p class="mb-4 max-w-[680px] text-center text-sm font-bold text-white">{artista.genero}</p>
+    <h1 class="mt-4 w-full max-w-[680px]">
+      <img src={ruta('marca/ariel-guerrero-5b-positivo.svg')} alt={artista.nombre} width="680" height="182" class="h-auto w-full" />
+    </h1>
+    <p class="mt-4 max-w-[680px] text-base text-white/75 lg:text-lg">
+      Presskit con música, fechas, material de prensa y datos técnicos para programadores y promotores.
+    </p>
+    <a href={`mailto:${artista.email}`} class="boton mt-6">Contactar</a>
+  </div>
+</section>

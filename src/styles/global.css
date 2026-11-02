@@ -1,0 +1,227 @@
+@import 'tailwindcss';
+@import '@fontsource/dela-gothic-one/latin-400.css';
+@import '@fontsource/anton/latin-400.css';
+@import '@fontsource/space-mono/latin-400.css';
+@import '@fontsource/space-mono/latin-700.css';
+
+/* Marca Ariel Guerrero. Blanco y negro de Tailwind apuntan a hueso y tinta. */
+@theme {
+  --font-sans: 'Space Mono', ui-monospace, monospace;
+  --font-display: 'Dela Gothic One', sans-serif;
+  --font-heading: 'Anton', sans-serif;
+  --color-white: #f2efe9;
+  --color-black: #0b0b0c;
+  --color-acero: #8a8a8e;
+  --color-voltaje: #e8ff3a;
+  --color-panel: #161617;
+  --color-linea: #313131;
+  --ease-masa: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html {
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-voltaje);
+  outline-offset: 2px;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-white);
+  padding: 0.5rem 0.75rem;
+  color: var(--color-black);
+  font-weight: 700;
+  transition: transform 700ms var(--ease-masa), background-color 700ms var(--ease-masa);
+}
+
+.boton:hover {
+  background: var(--color-voltaje);
+  transform: translateY(-2px);
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.enlace {
+  text-decoration: underline;
+  text-decoration-color: var(--color-linea);
+  text-underline-offset: 4px;
+  transition: color 700ms var(--ease-masa), text-decoration-color 700ms var(--ease-masa);
+}
+
+.enlace:hover {
+  color: var(--color-voltaje);
+  text-decoration-color: var(--color-voltaje);
+}
+
+/* Sin JavaScript las escenas se leen una debajo de otra. Con él, el escenario se fija y el scroll las recorre. */
+.js [data-show] {
+  height: calc(var(--escenas) * 100svh + 100svh);
+}
+
+.js [data-stage] {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.capa,
+.vinilo,
+.onda {
+  display: none;
+}
+
+.js .capa {
+  display: block;
+  position: absolute;
+}
+
+/* El vinilo queda fijo detrás de toda la página. Más tenue donde el texto puede pasarle por encima. */
+.js .vinilo {
+  display: block;
+  position: fixed;
+  opacity: 0.35;
+}
+
+@media (min-width: 1280px) {
+  .js .vinilo {
+    opacity: 1;
+  }
+}
+
+.js .onda {
+  display: block;
+}
+
+.capa {
+  inset: 0;
+  opacity: 0;
+  transition: opacity 700ms var(--ease-masa);
+}
+
+.capa.is-on {
+  opacity: 1;
+}
+
+.foto-principal {
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 100%;
+  height: 68%;
+  object-fit: cover;
+  object-position: top;
+  mask-image: linear-gradient(to top, transparent, black 40%);
+}
+
+@media (min-width: 768px) {
+  .foto-principal {
+    width: 52%;
+    height: 100%;
+    mask-image: linear-gradient(to right, transparent, black 30%), linear-gradient(to top, transparent, black 25%);
+    mask-composite: intersect;
+  }
+}
+
+.capa video {
+  opacity: 0;
+}
+
+.capa video.is-ready {
+  opacity: 1;
+}
+
+.escena {
+  padding: 6rem 1rem;
+}
+
+.js .escena {
+  position: absolute;
+  inset: auto 0 7rem;
+  padding: 0 1rem;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(4rem);
+  filter: blur(12px);
+  transition:
+    opacity 800ms var(--ease-masa),
+    transform 800ms var(--ease-masa),
+    filter 800ms var(--ease-masa),
+    visibility 0s linear 800ms;
+}
+
+.js .escena.is-on {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition-delay: 0s;
+}
+
+@media (min-width: 768px) {
+  .js .escena {
+    padding: 0 3rem;
+  }
+}
+
+.onda-llena {
+  clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
+}
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(4rem);
+  filter: blur(12px);
+  transition:
+    opacity 900ms var(--ease-masa),
+    transform 900ms var(--ease-masa),
+    filter 900ms var(--ease-masa);
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.js [data-palabra] {
+  color: rgb(242 239 233 / 0.3);
+  transition: color 700ms var(--ease-masa);
+}
+
+.js [data-palabra].is-lit {
+  color: var(--color-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .js .escena,
+  .js [data-reveal] {
+    transform: none;
+    filter: none;
+  }
+}

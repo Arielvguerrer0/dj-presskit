@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { artista, ruta } from '../data/presskit';
+---
+
+<Base title={`Página no encontrada · ${artista.nombre}`} description="Esta página no existe." noindex>
+  <main class="flex min-h-svh flex-col items-start justify-center px-4 md:px-12">
+    <p class="text-sm font-bold text-acero">Error 404</p>
+    <h1 class="mt-4 max-w-[680px] font-heading text-6xl font-normal uppercase tracking-wide">Este tema no está en la sesión</h1>
+    <a href={ruta('')} class="boton mt-8">Volver al presskit</a>
+  </main>
+</Base>

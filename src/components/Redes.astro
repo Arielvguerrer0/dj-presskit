@@ -1,0 +1,19 @@
+---
+import instagramIcon from '@phosphor-icons/core/assets/regular/instagram-logo.svg?raw';
+import soundcloudIcon from '@phosphor-icons/core/assets/regular/soundcloud-logo.svg?raw';
+import { artista } from '../data/presskit';
+
+const iconos: Record<string, string> = { Instagram: instagramIcon, SoundCloud: soundcloudIcon };
+---
+
+<ul class="flex items-center">
+  {
+    artista.redes.map((red) => (
+      <li>
+        <a href={red.url} rel="noopener" aria-label={red.titulo} class="block p-2.5 transition-colors duration-700 ease-masa hover:text-voltaje">
+          <span class="block size-6 [&_svg]:size-full [&_svg]:fill-current" set:html={iconos[red.titulo]} />
+        </a>
+      </li>
+    ))
+  }
+</ul>

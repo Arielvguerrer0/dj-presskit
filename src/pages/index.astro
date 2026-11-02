@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Escenario from '../components/Escenario.astro';
+import Onda from '../components/Onda.astro';
+import Portada from '../components/Portada.astro';
+import Vinilo from '../components/Vinilo.astro';
+import Falta from '../components/Falta.astro';
+import Redes from '../components/Redes.astro';
+import downloadIcon from '@phosphor-icons/core/assets/regular/download-simple.svg?raw';
+import { artista, escenasVisibles, faltan, frase, ruta } from '../data/presskit';
+
+if (import.meta.env.PROD && faltan.length) console.warn(`[presskit] Sin rellenar: ${faltan.join(', ')}`);
+
+const descripcion = [`Presskit de ${artista.nombre}`, artista.genero, artista.ciudad].filter(Boolean).join(' · ');
+const lineas = frase.split('\n').map((linea) => linea.split(' '));
+const navegacion = escenasVisibles.filter((escena) => escena.id === 'musica' || escena.id === 'fechas');
+const dev = import.meta.env.DEV;
+---
+
+<Base title={`${artista.nombre} · Presskit`} description={descripcion}>
+  <header class="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center">
+    <nav aria-label="Principal" class="pointer-events-auto mt-6 flex w-max max-w-[calc(100vw-2rem)] items-center gap-4">
+      <a href="#inicio" class="shrink-0"><img src={ruta('marca/ariel-guerrero-icono-ag.svg')} alt={artista.nombre} width="63" height="28" class="h-7 w-auto" /></a>
+      <div class="hidden items-center gap-4 text-sm text-white/70 md:flex">
+        {navegacion.map((escena) => <a href={`#${escena.id}`} class="transition-colors duration-700 ease-masa hover:text-white">{escena.etiqueta}</a>)}
+        {(dev || artista.descargas.length > 0) && <a href="#descargas" class="transition-colors duration-700 ease-masa hover:text-white">Descargas</a>}
+      </div>
+      <Redes />
+      {artista.email && <a href="#contacto" class="boton shrink-0 text-sm">Contactar</a>}
+    </nav>
+  </header>
+
+  <Vinilo />
+  <Onda />
+
+  <main id="contenido" class="relative z-10">
+    <Portada />
+
+    <section id="biografia" class="px-4 py-24 md:px-12">
+      <h2 data-reveal class="font-heading text-5xl font-normal uppercase tracking-wide lg:text-6xl">Biografía</h2>
+      <div class="mt-8 flex max-w-[680px] flex-col gap-6 text-base text-white/75 lg:text-lg">
+        {artista.bio.map((parrafo) => <p data-reveal>{parrafo}</p>)}
+      </div>
+    </section>
+
+    <Escenario />
+
+    <section aria-label="En resumen" class="flex min-h-svh items-center px-4 py-24 md:px-12">
+      <p data-frase class="max-w-[1000px] font-display text-3xl leading-tight tracking-tight lg:text-5xl">
+        {
+          lineas.map((linea) => (
+            <span class="block">
+              {linea.map((palabra) => <><span data-palabra>{palabra}</span>{' '}</>)}
+            </span>
+          ))
+        }
+      </p>
+    </section>
+
+    {
+      (dev || artista.descargas.length > 0) && (
+        <section id="descargas" class="px-4 py-24 md:px-12">
+          <h2 data-reveal class="font-heading text-5xl font-normal uppercase tracking-wide lg:text-6xl">Material para descargar</h2>
+          {artista.descargas.length > 0 ? (
+            <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {artista.descargas.map((descarga) => (
+                <li data-reveal>
+                  <a href={descarga.url} download class="flex items-center justify-between gap-4 bg-panel p-6 ring-1 ring-linea transition-transform duration-700 ease-masa hover:-translate-y-1 active:scale-[0.98]">
+                    <span>
+                      <span class="block text-lg font-bold">{descarga.titulo}</span>
+                      <span class="block text-sm text-white/60">{descarga.detalle}</span>
+                    </span>
+                    <span class="size-6 shrink-0 text-voltaje [&_svg]:size-full [&_svg]:fill-current" set:html={downloadIcon} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Falta>fotos, logo, rider y bio en archivos descargables</Falta>
+          )}
+        </section>
+      )
+    }
+
+    {
+      (dev || artista.email) && (
+        <section id="contacto" class="px-4 py-24 md:px-12">
+          <h2 data-reveal class="max-w-[680px] font-heading text-5xl font-normal uppercase tracking-wide lg:text-7xl">Hablemos de tu próxima fecha</h2>
+          {artista.email ? (
+            <a data-reveal href={`mailto:${artista.email}`} class="boton mt-8">Contactar</a>
+          ) : (
+            <Falta>email de contratación</Falta>
+          )}
+        </section>
+      )
+    }
+  </main>
+
+  <footer class="relative z-10 flex flex-wrap items-center justify-between gap-4 px-4 pt-8 pb-28 text-sm text-white/60 md:px-12">
+    <p>{artista.nombre}</p>
+    {
+      artista.redes.length > 0 ? (
+        <Redes />
+      ) : (
+        <Falta>enlaces a tus redes</Falta>
+      )
+    }
+  </footer>
+</Base>

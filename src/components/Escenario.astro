@@ -1,0 +1,77 @@
+---
+import Falta from './Falta.astro';
+import { artista, escenasVisibles } from '../data/presskit';
+
+const titulo = 'font-heading text-5xl font-normal uppercase tracking-wide md:max-w-[55%] lg:text-7xl';
+const antetitulo = 'mb-4 text-sm font-bold text-acero';
+---
+
+<section data-show style={`--escenas: ${escenasVisibles.length}`} aria-label="Presentación">
+  <div data-stage class="relative">
+    {
+      escenasVisibles.map((escena, i) => (
+        <div data-capa class:list={['capa', i === 0 && 'is-on']} aria-hidden="true">
+          {(escena.imagen || escena.video) && <div class="absolute inset-0 bg-black" />}
+          {escena.imagen && <img src={escena.imagen} alt={escena.alt ?? ''} loading={i === 0 ? 'eager' : 'lazy'} class="absolute inset-0 size-full object-cover" />}
+          {escena.video && <video data-src={escena.video} muted playsinline preload="none" tabindex="-1" class="absolute inset-0 size-full object-cover" />}
+          {(escena.imagen || escena.video) && <div class="absolute inset-0 bg-black/50" />}
+        </div>
+      ))
+    }
+
+    {
+      escenasVisibles.map((escena, i) => (
+        <article id={escena.id} data-escena class:list={['escena', i === 0 && 'is-on']}>
+          {escena.id === 'musica' && (
+            <>
+              <p class={antetitulo}>Música</p>
+              <h2 class={titulo}>Escucha antes de decidir</h2>
+              {artista.mixes.length ? (
+                <ul class="mt-6 flex max-w-xl flex-col gap-2 text-lg">
+                  {artista.mixes.slice(0, 4).map((mix) => (
+                    <li><a href={mix.url} rel="noopener" class="enlace">{mix.titulo}</a></li>
+                  ))}
+                </ul>
+              ) : (
+                <Falta>enlaces a tus mixes</Falta>
+              )}
+            </>
+          )}
+
+          {escena.id === 'fechas' && (
+            <>
+              <p class={antetitulo}>Fechas</p>
+              <h2 class={titulo}>Dónde he tocado</h2>
+              {artista.fechas.length ? (
+                <ul class="mt-6 flex max-w-xl flex-col gap-2">
+                  {artista.fechas.slice(0, 5).map((fecha) => (
+                    <li class="flex flex-wrap gap-x-4 text-base">
+                      <span class="text-white/60 tabular-nums">{fecha.fecha}</span>
+                      <span>{fecha.lugar}, {fecha.ciudad}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Falta>clubes, festivales y fechas</Falta>
+              )}
+            </>
+          )}
+
+          {escena.id === 'tecnica' && (
+            <>
+              <p class={antetitulo}>Técnica</p>
+              <h2 class={titulo}>Lo que necesito en cabina</h2>
+              {artista.tecnica.length ? (
+                <ul class="mt-6 flex max-w-xl flex-col gap-2 text-base text-white/75">
+                  {artista.tecnica.slice(0, 6).map((linea) => <li>{linea}</li>)}
+                </ul>
+              ) : (
+                <Falta>equipo y necesidades técnicas</Falta>
+              )}
+            </>
+          )}
+        </article>
+      ))
+    }
+  </div>
+</section>

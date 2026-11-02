@@ -1,0 +1,45 @@
+---
+import { artista, escenasVisibles } from '../data/presskit';
+
+const secciones = [
+  { id: 'inicio', etiqueta: 'Inicio' },
+  { id: 'biografia', etiqueta: 'Biografía' },
+  ...escenasVisibles,
+  ...(import.meta.env.DEV || artista.descargas.length > 0 ? [{ id: 'descargas', etiqueta: 'Descargas' }] : []),
+  { id: 'contacto', etiqueta: 'Contacto' },
+];
+
+// Forma de onda decorativa y siempre igual: la altura de cada barra sale de su posición.
+const barras = Array.from({ length: 192 }, (_, i) => {
+  const ruido = Math.abs(Math.sin(i * 12.9898) * 43758.5453) % 1;
+  const compas = i % 8 === 0 ? 1 : 0.65;
+  return Math.round(6 + 26 * ruido * compas);
+});
+const dibujo = barras.map((alto, i) => `M${i * 3} ${20 - alto / 2}v${alto}`).join('');
+---
+
+<nav aria-label="Secciones" class="onda fixed inset-x-0 bottom-0 z-30 bg-linear-to-t from-black via-black/90 to-transparent px-4 pt-10 pb-4 md:px-12">
+  <div class="mb-2 flex justify-between gap-2 text-xs text-white/60">
+    {
+      secciones.map((seccion, i) => (
+        <a
+          href={`#${seccion.id}`}
+          data-marca
+          aria-current={i === 0 ? 'true' : 'false'}
+          class="hidden transition-colors duration-700 ease-masa hover:text-white aria-[current=true]:text-white md:inline"
+        >
+          {seccion.etiqueta}
+        </a>
+      ))
+    }
+    <span data-contador class="tabular-nums md:hidden"></span>
+  </div>
+  <div aria-hidden="true" class="relative h-8">
+    <svg viewBox="0 0 576 40" preserveAspectRatio="none" class="absolute inset-0 size-full text-white/25">
+      <path d={dibujo} stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    </svg>
+    <svg viewBox="0 0 576 40" preserveAspectRatio="none" class="onda-llena absolute inset-0 size-full text-white">
+      <path d={dibujo} stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+    </svg>
+  </div>
+</nav>

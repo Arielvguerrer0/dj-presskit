@@ -1,0 +1,6 @@
+---
+// Aviso de dato sin rellenar. Solo existe en desarrollo.
+const dev = import.meta.env.DEV;
+---
+
+{dev && <p class="mt-4 w-fit max-w-md bg-panel px-3 py-2 text-sm text-voltaje ring-1 ring-voltaje/50">Falta: <slot /></p>}
