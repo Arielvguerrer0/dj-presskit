@@ -1,0 +1,48 @@
+---
+import { artista, ruta } from '../data/presskit';
+
+const cdj = ruta('media/rider-cdj3000.webp');
+const mixer = ruta('media/rider-djm750mk2.webp');
+const reproductores = artista.rider.find((equipo) => equipo.tipo === 'reproductor');
+const mezclador = artista.rider.find((equipo) => equipo.tipo === 'mixer');
+---
+
+<section id="rider" data-rider class="rider relative" aria-labelledby="rider-titulo">
+  <div class="rider-escenario flex flex-col justify-center gap-8 px-4 py-24 md:px-12">
+    <div data-rider-titulo>
+      <p class="mb-4 text-sm font-bold text-acero">Rider técnico</p>
+      <h2 id="rider-titulo" class="font-heading text-5xl font-normal uppercase tracking-wide lg:text-7xl">Lo que necesito en cabina</h2>
+    </div>
+
+    <div class="relative">
+      <div data-rider-luz aria-hidden="true" class="rider-luz"></div>
+      <div class="cabina" role="img" aria-label="Cabina con dos CDJ-3000 a los lados y el mixer DJM-750MK2 al centro">
+        <div data-rider-equipo="izquierda" class="equipo">
+          <img src={cdj} alt="" width="436" height="600" />
+          <div data-jog class="jog"><img src={cdj} alt="" width="436" height="600" /></div>
+        </div>
+        <div data-rider-equipo="mixer" class="equipo">
+          <img src={mixer} alt="" width="987" height="1190" />
+        </div>
+        <div data-rider-equipo="derecha" class="equipo">
+          <img src={cdj} alt="" width="436" height="600" />
+          <div data-jog class="jog"><img src={cdj} alt="" width="436" height="600" /></div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="grid gap-4 md:grid-cols-2">
+      {
+        [reproductores, mezclador].filter(Boolean).map((equipo) => (
+          <li data-rider-dato class="flex items-baseline gap-4 border-t-2 border-white pt-4">
+            <span class="font-display text-3xl lg:text-4xl">{equipo!.cantidad}×</span>
+            <span>
+              <span class="block text-lg font-bold lg:text-xl">{equipo!.marca} {equipo!.modelo}</span>
+              <span class="block text-sm text-white/60">{equipo!.detalle}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

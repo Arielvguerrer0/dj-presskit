@@ -1,5 +1,6 @@
 ---
 import Falta from './Falta.astro';
+import Reproductor from './Reproductor.astro';
 import { artista, escenasVisibles } from '../data/presskit';
 
 const titulo = 'font-heading text-5xl font-normal uppercase tracking-wide md:max-w-[55%] lg:text-7xl';
@@ -26,8 +27,9 @@ const antetitulo = 'mb-4 text-sm font-bold text-acero';
             <>
               <p class={antetitulo}>Música</p>
               <h2 class={titulo}>Escucha antes de decidir</h2>
+              {artista.soundcloud && <Reproductor />}
               {artista.mixes.length ? (
-                <ul class="mt-6 flex max-w-xl flex-col gap-2 text-lg">
+                <ul class="mt-4 flex max-w-xl flex-col gap-2 text-lg">
                   {artista.mixes.slice(0, 4).map((mix) => (
                     <li><a href={mix.url} rel="noopener" class="enlace">{mix.titulo}</a></li>
                   ))}
@@ -53,20 +55,6 @@ const antetitulo = 'mb-4 text-sm font-bold text-acero';
                 </ul>
               ) : (
                 <Falta>clubes, festivales y fechas</Falta>
-              )}
-            </>
-          )}
-
-          {escena.id === 'tecnica' && (
-            <>
-              <p class={antetitulo}>Técnica</p>
-              <h2 class={titulo}>Lo que necesito en cabina</h2>
-              {artista.tecnica.length ? (
-                <ul class="mt-6 flex max-w-xl flex-col gap-2 text-base text-white/75">
-                  {artista.tecnica.slice(0, 6).map((linea) => <li>{linea}</li>)}
-                </ul>
-              ) : (
-                <Falta>equipo y necesidades técnicas</Falta>
               )}
             </>
           )}

@@ -1,6 +1,8 @@
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { animarRider } from './rider';
+import { iniciarReproductor } from './reproductor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,21 +36,8 @@ const aparicion = new IntersectionObserver(
 );
 document.querySelectorAll('[data-reveal]').forEach((el) => aparicion.observe(el));
 
-// Frase: las palabras se encienden al cruzar una línea de la pantalla, una detrás de otra aunque entren a la vez.
-const palabras = new IntersectionObserver(
-  (entradas) => {
-    entradas
-      .filter((entrada) => entrada.isIntersecting)
-      .forEach((entrada, orden) => {
-        const palabra = entrada.target as HTMLElement;
-        palabra.style.transitionDelay = `${orden * 80}ms`;
-        palabra.classList.add('is-lit');
-        palabras.unobserve(palabra);
-      });
-  },
-  { rootMargin: '0px 0px -35% 0px' },
-);
-document.querySelectorAll('[data-palabra]').forEach((el) => palabras.observe(el));
+animarRider(calma);
+iniciarReproductor();
 
 const show = document.querySelector<HTMLElement>('[data-show]');
 const stage = show?.querySelector<HTMLElement>('[data-stage]');
@@ -135,16 +124,14 @@ if (show && stage) {
     irA(y);
   });
 
-  // La onda y el vinilo acompañan toda la página, no solo las escenas.
+  // La onda acompaña toda la página, no solo las escenas.
   const marcas = [...document.querySelectorAll<HTMLAnchorElement>('[data-marca]')];
-  const vinilo = document.querySelector<SVGElement>('[data-vinilo]');
   const contador = document.querySelector<HTMLElement>('[data-contador]');
   const dosCifras = (n: number) => String(n).padStart(2, '0');
   let inicios: number[] = [];
 
   const pintarPagina = (progreso: number) => {
     document.documentElement.style.setProperty('--p', `${progreso * 100}%`);
-    if (vinilo && !calma) vinilo.style.rotate = `${progreso * 720}deg`;
     const linea = window.scrollY + window.innerHeight * 0.4;
     const indice = Math.max(0, inicios.findLastIndex((inicio) => inicio <= linea));
     marcas.forEach((marca, i) => marca.setAttribute('aria-current', String(i === indice)));

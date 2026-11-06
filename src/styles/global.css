@@ -85,7 +85,6 @@ li {
 }
 
 .capa,
-.vinilo,
 .onda {
   display: none;
 }
@@ -93,19 +92,6 @@ li {
 .js .capa {
   display: block;
   position: absolute;
-}
-
-/* El vinilo queda fijo detrás de toda la página. Más tenue donde el texto puede pasarle por encima. */
-.js .vinilo {
-  display: block;
-  position: fixed;
-  opacity: 0.35;
-}
-
-@media (min-width: 1280px) {
-  .js .vinilo {
-    opacity: 1;
-  }
 }
 
 .js .onda {
@@ -155,7 +141,7 @@ li {
 
 .js .escena {
   position: absolute;
-  inset: auto 0 7rem;
+  inset: auto 0 9rem;
   padding: 0 1rem;
   visibility: hidden;
   opacity: 0;
@@ -182,6 +168,67 @@ li {
   }
 }
 
+/* Rider: con JavaScript la cabina se arma mientras la sección queda fija. */
+.js .rider {
+  height: 320svh;
+}
+
+.js .rider-escenario {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  padding-block: 5rem 9rem;
+}
+
+.cabina {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2.5vw, 2.5rem);
+  height: min(36svh, calc((100vw - 2rem) / 2.5));
+}
+
+.equipo {
+  position: relative;
+  height: 100%;
+}
+
+.equipo > img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
+/* Recorte redondo del plato del CDJ, en la misma posición de la foto, para que gire. */
+.jog {
+  position: absolute;
+  top: 49.33%;
+  left: 25.2%;
+  width: 47.7%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.jog img {
+  position: absolute;
+  top: -142.3%;
+  left: -52.9%;
+  width: 209.6%;
+  max-width: none;
+  height: auto;
+}
+
+.rider-luz {
+  position: absolute;
+  inset: -20% 5%;
+  background: radial-gradient(closest-side, rgb(242 239 233 / 0.14), transparent);
+  pointer-events: none;
+}
+
 .onda-llena {
   clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0);
 }
@@ -202,15 +249,6 @@ li {
   filter: none;
 }
 
-.js [data-palabra] {
-  color: rgb(242 239 233 / 0.3);
-  transition: color 700ms var(--ease-masa);
-}
-
-.js [data-palabra].is-lit {
-  color: var(--color-white);
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -224,4 +262,82 @@ li {
     transform: none;
     filter: none;
   }
+}
+
+/* Reproductor propio de SoundCloud. */
+.reproductor-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.reproductor-portada {
+  filter: grayscale(1);
+  transition: filter 700ms var(--ease-masa);
+}
+
+[data-sonando] .reproductor-portada {
+  filter: none;
+}
+
+.reproductor-icono-pausa,
+[data-sonando] .reproductor-icono-play {
+  display: none;
+}
+
+[data-sonando] .reproductor-icono-pausa {
+  display: block;
+}
+
+[data-estado='cargando'] .reproductor-lista {
+  min-height: 12rem;
+}
+
+[data-estado='error'] > :not([data-error]) {
+  display: none;
+}
+
+.reproductor-lista > li + li {
+  border-top: 1px solid var(--color-linea);
+}
+
+.reproductor-barra {
+  height: 1.5rem;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reproductor-barra::-webkit-slider-runnable-track {
+  height: 3px;
+  background: var(--color-linea);
+}
+
+.reproductor-barra::-moz-range-track {
+  height: 3px;
+  background: var(--color-linea);
+}
+
+.reproductor-barra::-moz-range-progress {
+  height: 3px;
+  background: var(--color-white);
+}
+
+.reproductor-barra::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4.5px;
+  background: var(--color-white);
+}
+
+.reproductor-barra::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-white);
 }

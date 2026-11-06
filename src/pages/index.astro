@@ -3,16 +3,15 @@ import Base from '../layouts/Base.astro';
 import Escenario from '../components/Escenario.astro';
 import Onda from '../components/Onda.astro';
 import Portada from '../components/Portada.astro';
-import Vinilo from '../components/Vinilo.astro';
+import Rider from '../components/Rider.astro';
 import Falta from '../components/Falta.astro';
 import Redes from '../components/Redes.astro';
 import downloadIcon from '@phosphor-icons/core/assets/regular/download-simple.svg?raw';
-import { artista, escenasVisibles, faltan, frase, ruta } from '../data/presskit';
+import { artista, escenasVisibles, faltan, ruta } from '../data/presskit';
 
 if (import.meta.env.PROD && faltan.length) console.warn(`[presskit] Sin rellenar: ${faltan.join(', ')}`);
 
 const descripcion = [`Presskit de ${artista.nombre}`, artista.genero, artista.ciudad].filter(Boolean).join(' · ');
-const lineas = frase.split('\n').map((linea) => linea.split(' '));
 const navegacion = escenasVisibles.filter((escena) => escena.id === 'musica' || escena.id === 'fechas');
 const dev = import.meta.env.DEV;
 ---
@@ -23,6 +22,7 @@ const dev = import.meta.env.DEV;
       <a href="#inicio" class="shrink-0"><img src={ruta('marca/ariel-guerrero-icono-ag.svg')} alt={artista.nombre} width="63" height="28" class="h-7 w-auto" /></a>
       <div class="hidden items-center gap-4 text-sm text-white/70 md:flex">
         {navegacion.map((escena) => <a href={`#${escena.id}`} class="transition-colors duration-700 ease-masa hover:text-white">{escena.etiqueta}</a>)}
+        <a href="#rider" class="transition-colors duration-700 ease-masa hover:text-white">Rider</a>
         {(dev || artista.descargas.length > 0) && <a href="#descargas" class="transition-colors duration-700 ease-masa hover:text-white">Descargas</a>}
       </div>
       <Redes />
@@ -30,7 +30,6 @@ const dev = import.meta.env.DEV;
     </nav>
   </header>
 
-  <Vinilo />
   <Onda />
 
   <main id="contenido" class="relative z-10">
@@ -45,17 +44,7 @@ const dev = import.meta.env.DEV;
 
     <Escenario />
 
-    <section aria-label="En resumen" class="flex min-h-svh items-center px-4 py-24 md:px-12">
-      <p data-frase class="max-w-[1000px] font-display text-3xl leading-tight tracking-tight lg:text-5xl">
-        {
-          lineas.map((linea) => (
-            <span class="block">
-              {linea.map((palabra) => <><span data-palabra>{palabra}</span>{' '}</>)}
-            </span>
-          ))
-        }
-      </p>
-    </section>
+    <Rider />
 
     {
       (dev || artista.descargas.length > 0) && (
@@ -96,7 +85,7 @@ const dev = import.meta.env.DEV;
     }
   </main>
 
-  <footer class="relative z-10 flex flex-wrap items-center justify-between gap-4 px-4 pt-8 pb-28 text-sm text-white/60 md:px-12">
+  <footer class="relative z-10 flex flex-wrap items-center justify-between gap-4 px-4 pt-8 pb-36 text-sm md:pb-40 text-white/60 md:px-12">
     <p>{artista.nombre}</p>
     {
       artista.redes.length > 0 ? (

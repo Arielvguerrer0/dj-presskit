@@ -1,0 +1,46 @@
+---
+import playIcon from '@phosphor-icons/core/assets/fill/play-fill.svg?raw';
+import pauseIcon from '@phosphor-icons/core/assets/fill/pause-fill.svg?raw';
+import { artista } from '../data/presskit';
+
+// SoundCloud suena en un reproductor oculto; esta es la cara visible, con los colores de la marca.
+const widget = `https://w.soundcloud.com/player/?url=${encodeURIComponent(artista.soundcloud)}&auto_play=false&hide_related=true&show_comments=false&show_reposts=false&visual=false`;
+---
+
+<div data-reproductor data-estado="cargando" class="reproductor mt-6 w-full max-w-xl">
+  <iframe data-src={widget} title="Reproductor de SoundCloud" allow="autoplay; encrypted-media" tabindex="-1" aria-hidden="true" class="reproductor-oculto"></iframe>
+
+  <div class="flex gap-4 bg-panel p-4 ring-1 ring-linea">
+    <img data-portada alt="" width="96" height="96" class="reproductor-portada size-20 shrink-0 bg-black object-cover md:size-24" />
+    <div class="flex min-w-0 flex-1 flex-col justify-between gap-2">
+      <div class="flex items-start gap-3">
+        <div class="min-w-0 flex-1">
+          <p class="text-xs text-white/60">SoundCloud · {artista.nombre}</p>
+          <p data-titulo class="truncate font-bold">Cargando sets…</p>
+        </div>
+        <button type="button" data-boton disabled aria-label="Reproducir" class="grid size-11 shrink-0 place-items-center bg-white text-black transition-colors duration-700 ease-masa hover:bg-voltaje disabled:opacity-40">
+          <span class="reproductor-icono-play size-5 [&_svg]:size-full [&_svg]:fill-current" set:html={playIcon} />
+          <span class="reproductor-icono-pausa size-5 [&_svg]:size-full [&_svg]:fill-current" set:html={pauseIcon} />
+        </button>
+      </div>
+      <div class="flex items-center gap-3 text-xs text-white/60 tabular-nums">
+        <span data-actual>0:00</span>
+        <input data-barra type="range" min="0" max="1000" value="0" disabled aria-label="Avance del set" class="reproductor-barra min-w-0 flex-1" />
+        <span data-total>0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <ol data-lista class="reproductor-lista mt-2 flex flex-col"></ol>
+  <template data-plantilla>
+    <li>
+      <button type="button" class="flex w-full items-center gap-3 py-2 text-left text-sm text-white/60 transition-colors duration-700 ease-masa hover:text-white aria-[current=true]:text-white">
+        <span data-numero class="w-6 text-xs tabular-nums"></span>
+        <span data-nombre class="min-w-0 flex-1 truncate"></span>
+        <span data-duracion class="text-xs tabular-nums"></span>
+      </button>
+    </li>
+  </template>
+
+  <p data-error hidden class="mt-4 text-sm text-white/60">No se pudo cargar el reproductor. Escucha los sets directo en SoundCloud.</p>
+</div>

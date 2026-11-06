@@ -5,6 +5,7 @@ export const ruta = (archivo: string) => `${import.meta.env.BASE_URL.replace(/\/
 
 export type Enlace = { titulo: string; url: string };
 export type Fecha = { fecha: string; lugar: string; ciudad: string };
+export type Equipo = { tipo: 'reproductor' | 'mixer'; cantidad: number; marca: string; modelo: string; detalle: string };
 export type Descarga = { titulo: string; detalle: string; url: string };
 
 export const artista = {
@@ -18,8 +19,10 @@ export const artista = {
     'La misión de Ariel es que la gente conecte con la música y logre sentir la misma emoción que él experimenta cuando toca. Moviéndose fluidamente entre el House, el Deep y el Tech House, sus sets están llenos de energía y alegría, destacando siempre un groove juguetón que se genera al mezclar buenos bajos con percusiones. Para él, tocar no es solo poner música, es compartir lo que ama y hacer que la pista disfrute con él.',
   ],
   email: 'arielguerreromusic@gmail.com',
+  // Perfil que muestra el reproductor de la escena Música, con todos los sets subidos.
+  soundcloud: 'https://api.soundcloud.com/users/1399166826',
   // Ejemplo: { titulo: 'Sesión de primavera', url: 'https://soundcloud.com/...' }
-  mixes: [{ titulo: 'Escuchar en SoundCloud', url: 'https://soundcloud.com/arielvguerrero' }] as Enlace[],
+  mixes: [{ titulo: 'Abrir mi perfil en SoundCloud', url: 'https://soundcloud.com/arielvguerrero' }] as Enlace[],
   redes: [
     { titulo: 'SoundCloud', url: 'https://soundcloud.com/arielvguerrero' },
     { titulo: 'Instagram', url: 'https://www.instagram.com/arielguerrerodj' },
@@ -27,7 +30,11 @@ export const artista = {
   // Ejemplo: { fecha: '14 mar 2027', lugar: 'Nombre del club', ciudad: 'Madrid' }
   fechas: [] as Fecha[],
   // Ejemplo: 'Dos reproductores CDJ 3000 y mezclador DJM 900'
-  tecnica: [] as string[],
+  // Equipo que pido en cabina. La sección Rider arma la cabina con estos datos.
+  rider: [
+    { tipo: 'reproductor', cantidad: 2, marca: 'Pioneer DJ', modelo: 'CDJ-3000', detalle: 'Reproductor multimedia, uno a cada lado del mixer' },
+    { tipo: 'mixer', cantidad: 1, marca: 'Pioneer DJ', modelo: 'DJM-750MK2', detalle: 'Mixer DJ de 4 canales' },
+  ] as Equipo[],
   // Los archivos van en public/descargas. Ejemplo: { titulo: 'Fotos', detalle: 'ZIP, 40 MB', url: '/descargas/fotos.zip' }
   descargas: [
     { titulo: 'Logo', detalle: 'SVG', url: ruta('descargas/ariel-guerrero-5b-positivo.svg') },
@@ -35,9 +42,7 @@ export const artista = {
   ] as Descarga[],
 };
 
-export const frase = 'Todo lo que necesitas para programarme,\nreunido en una sola página.';
-
-export type EscenaId = 'musica' | 'fechas' | 'tecnica';
+export type EscenaId = 'musica' | 'fechas';
 export type Escena = {
   id: EscenaId;
   etiqueta: string;
@@ -52,13 +57,11 @@ export type Escena = {
 const escenas: Escena[] = [
   { id: 'musica', etiqueta: 'Música' },
   { id: 'fechas', etiqueta: 'Fechas' },
-  { id: 'tecnica', etiqueta: 'Técnica' },
 ];
 
 const tieneDatos: Record<EscenaId, boolean> = {
-  musica: artista.mixes.length > 0,
+  musica: Boolean(artista.soundcloud) || artista.mixes.length > 0,
   fechas: artista.fechas.length > 0,
-  tecnica: artista.tecnica.length > 0,
 };
 
 // En desarrollo se ven todas para poder revisar el diseño. Al publicar, solo las que tienen contenido.
@@ -73,6 +76,6 @@ export const faltan = [
   !artista.mixes.length && 'mixes',
   !artista.redes.length && 'redes',
   !artista.fechas.length && 'fechas',
-  !artista.tecnica.length && 'datos técnicos',
+  !artista.rider.length && 'rider técnico',
   !artista.descargas.length && 'descargas',
 ].filter((campo): campo is string => Boolean(campo));

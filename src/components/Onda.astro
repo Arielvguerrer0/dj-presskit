@@ -5,6 +5,7 @@ const secciones = [
   { id: 'inicio', etiqueta: 'Inicio' },
   { id: 'biografia', etiqueta: 'Biografía' },
   ...escenasVisibles,
+  { id: 'rider', etiqueta: 'Rider' },
   ...(import.meta.env.DEV || artista.descargas.length > 0 ? [{ id: 'descargas', etiqueta: 'Descargas' }] : []),
   { id: 'contacto', etiqueta: 'Contacto' },
 ];
@@ -34,12 +35,12 @@ const dibujo = barras.map((alto, i) => `M${i * 3} ${20 - alto / 2}v${alto}`).joi
     }
     <span data-contador class="tabular-nums md:hidden"></span>
   </div>
-  <div aria-hidden="true" class="relative h-8">
+  <div aria-hidden="true" class="relative h-12 md:h-16">
     <svg viewBox="0 0 576 40" preserveAspectRatio="none" class="absolute inset-0 size-full text-white/25">
-      <path d={dibujo} stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+      <path d={dibujo} stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"></path>
     </svg>
     <svg viewBox="0 0 576 40" preserveAspectRatio="none" class="onda-llena absolute inset-0 size-full text-white">
-      <path d={dibujo} stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+      <path d={dibujo} stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"></path>
     </svg>
   </div>
 </nav>
