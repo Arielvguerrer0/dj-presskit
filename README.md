@@ -42,7 +42,7 @@ ffmpeg -i public/media/inicio.mp4 -frames:v 1 public/media/inicio.jpg
 
 ## Publicar
 
-La web se publica sola en Cloudflare Pages (proyecto `dj-presskit`) cada vez que subes cambios a `master`. Cloudflare ejecuta `npm run build` con `NODE_VERSION=22` y `SITE_URL=https://arielguerrerodj.cl`, y sirve la carpeta `dist/`.
+La web se publica sola en Cloudflare Pages (proyecto `dj-presskit`) cada vez que subes cambios a `master`. Cloudflare ejecuta `npm run build` con `NODE_VERSION=22` y `SITE_URL=https://arielguerrerodj.com`, y sirve la carpeta `dist/`.
 
 Para generarla a mano, en PowerShell:
 
